@@ -1,40 +1,39 @@
 # Structurize
 
-A Powerful tool that converts API responses to Type definations
+A powerful tool that converts API responses to Type definitions
 
 ## Languages Supported
 
-[X] TypeScript
-[ ] JavaScript
-[ ] Python
-[X] Dart
-[X] Java
-[X] C#
-[ ] C++
-[ ] C
-[ ] PHP
-[ ] Ruby
+- [x] TypeScript
+- [x] JavaScript
+- [ ] Python
+- [x] Dart
+- [x] Java
+- [x] C#
+- [ ] C++
+- [ ] C
+- [ ] PHP
+- [ ] Ruby
 
 ## How to use
 
 1. Go to https://structurize.virajbhartiya.com/
 2. Paste your API response in the text area
-3. Click on "Structurize"
-4. Wait for the response
-5. Copy the response
-6. Paste it in your code editor
-7. Use it
+3. Select the output language
+4. Click on "Structurize"
+5. Copy the generated code
+6. Use it in your project
 
 ## How to install locally
 
 1. Clone the repository
 2. Run `npm install`
 3. Run `npm run dev`
-4. Go to http://localhost:5173/
+4. Open http://localhost:5173/ in your browser
 5. Paste your API response in the text area
-6. Click on "Structurize"
-7. Wait for the response
-8. Copy the response
+6. Select the output language
+7. Click on "Structurize"
+8. Copy the generated code
 
 ## How to contribute
 
@@ -44,4 +43,4 @@ A Powerful tool that converts API responses to Type definations
 4. Create a pull request
 5. Wait for the review
 6. Merge the pull request
-7. Celebrate
+7. Celebrate!
