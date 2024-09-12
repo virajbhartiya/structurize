@@ -65,7 +65,7 @@ const ConversionForm = ({
           value={apiResponse}
           onChange={(e) => setApiResponse(e.target.value)}
           placeholder={sampleApiResponse}
-          className="min-h-[200px]"
+          className="min-h-[300px]"
         />
         <div className="flex space-x-4">
           <Select
