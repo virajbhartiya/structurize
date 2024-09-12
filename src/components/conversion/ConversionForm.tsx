@@ -84,6 +84,7 @@ const ConversionForm = ({
               <SelectItem value="java">Java</SelectItem>
               <SelectItem value="csharp">C#</SelectItem>
               <SelectItem value="dart">Dart</SelectItem>
+              <SelectItem value="go">Go</SelectItem>
             </SelectContent>
           </Select>
           <Select

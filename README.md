@@ -6,6 +6,7 @@ A powerful tool that converts API responses to Type definitions
 
 - [x] TypeScript
 - [x] JavaScript
+- [x] Go
 - [ ] Python
 - [x] Dart
 - [x] Java

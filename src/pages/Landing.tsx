@@ -36,11 +36,11 @@ export const Landing = () => {
   }
 
   return (
-    <>
+    <div className="min-h-screen md:h-screen md:overflow-hidden">
       <Header />
-      <div className="container mx-auto p-4">
-        <div className="flex flex-col gap-4 lg:flex-row ">
-          <div className="w-full lg:w-1/2">
+      <div className="container mx-auto p-4 h-full">
+        <div className="flex flex-col gap-4 md:flex-row md:h-[calc(100vh-5rem)]">
+          <div className="w-full md:w-1/2 md:overflow-auto">
             <ConversionForm
               apiResponse={apiResponse}
               setApiResponse={setApiResponse}
@@ -51,7 +51,7 @@ export const Landing = () => {
               handleConvert={handleConvert}
             />
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full md:w-1/2 md:overflow-auto">
             {result && (
               <ConversionResult
                 result={result}
@@ -62,6 +62,6 @@ export const Landing = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

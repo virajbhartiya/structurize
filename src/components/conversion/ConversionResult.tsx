@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import * as prismStyles from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Button } from '../ui/button'
@@ -20,35 +14,36 @@ const ConversionResult = ({
   highlightStyle: string
 }) => {
   return (
-    <Card className="w-full max-w-2xl mx-auto border-[var(--accent)]">
-      <CardHeader>
-        <CardTitle className="text-xl font-thin">Converted Result</CardTitle>
+    <Card className="w-full h-full border-[var(--accent)] flex flex-col">
+      <CardHeader className="flex-shrink-0">
+        <CardTitle className="text-xl font-thin flex justify-between items-center">
+          <p>Converted Result</p>
+          {result && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                navigator.clipboard.writeText(result)
+                toast.success('Copied to clipboard')
+              }}
+            >
+              Copy Result
+            </Button>
+          )}
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow overflow-auto min-h-0">
         <SyntaxHighlighter
           language={outputLanguage}
           style={prismStyles[highlightStyle as keyof typeof prismStyles]}
           customStyle={{
             margin: 0,
             borderRadius: '0.375rem',
+            height: '100%',
           }}
         >
           {result}
         </SyntaxHighlighter>
       </CardContent>
-      <CardFooter>
-        {result && (
-          <Button
-            variant="outline"
-            onClick={() => {
-              navigator.clipboard.writeText(result)
-              toast.success('Copied to clipboard')
-            }}
-          >
-            Copy Result
-          </Button>
-        )}
-      </CardFooter>
     </Card>
   )
 }
