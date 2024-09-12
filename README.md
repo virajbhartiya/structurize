@@ -15,6 +15,14 @@ A powerful tool that converts API responses to Type definitions
 - [ ] C
 - [ ] PHP
 - [ ] Ruby
+- [ ] Swift
+- [ ] Kotlin
+- [ ] Rust
+- [ ] Scala
+- [ ] Elixir
+- [ ] Erlang
+- [ ] Haskell
+- [ ] Lua
 
 ## How to use
 
