@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import * as prismStyles from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useEffect, useRef } from 'react'
 
 const sampleApiResponse = `{
   "user": {
@@ -49,6 +50,25 @@ const ConversionForm = ({
   setHighlightStyle,
   handleConvert,
 }: ConversionFormProps) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }, [apiResponse])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setApiResponse(e.target.value)
+    try {
+      JSON.parse(e.target.value)
+      e.target.classList.remove('border-red-500')
+    } catch (error) {
+      e.target.classList.add('border-red-500')
+    }
+  }
+
   return (
     <Card className="w-full max-w-2xl mx-auto border-[var(--accent)]">
       <CardHeader>
@@ -62,10 +82,13 @@ const ConversionForm = ({
       </CardHeader>
       <CardContent className="space-y-4">
         <Textarea
+          ref={textareaRef}
           value={apiResponse}
-          onChange={(e) => setApiResponse(e.target.value)}
+          onChange={handleInputChange}
           placeholder={sampleApiResponse}
-          className="min-h-[300px]"
+          className="min-h-[300px] font-mono text-sm"
+          spellCheck={false}
+          wrap="off"
         />
         <div className="flex space-x-4">
           <Select
