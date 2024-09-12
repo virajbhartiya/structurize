@@ -50,7 +50,14 @@
     --ring: 240 4.9% 83.9%;
     --accent: #00efa6;
   }
+
+  
+
+  
+  .bg-background { background-color: hsl(var(--background)); }
+  .text-foreground { color: hsl(var(--foreground)); }
 }
+
 
 @font-face {
   font-family: "plex";
