@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card'
 import * as prismStyles from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useEffect, useRef } from 'react'
+import React from 'react'
 
 const sampleApiResponse = `{
   "user": {
@@ -69,8 +70,24 @@ const ConversionForm = ({
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      const start = e.currentTarget.selectionStart
+      const end = e.currentTarget.selectionEnd
+      const value = e.currentTarget.value
+      const newValue = value.substring(0, start) + '\t' + value.substring(end)
+      setApiResponse(newValue)
+      // Set cursor position after inserted tab
+      setTimeout(() => {
+        e.currentTarget.selectionStart = e.currentTarget.selectionEnd =
+          start + 1
+      }, 0)
+    }
+  }
+
   return (
-    <Card className="w-full max-w-2xl mx-auto border-[var(--accent)]">
+    <Card className="w-full max-w-2xl max-h-[calc(100vh-20rem)] mx-auto border-[var(--accent)]">
       <CardHeader>
         <CardTitle className="text-xl font-thin">
           Convert JSON to Code
@@ -85,8 +102,9 @@ const ConversionForm = ({
           ref={textareaRef}
           value={apiResponse}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           placeholder={sampleApiResponse}
-          className="min-h-[300px] font-mono text-sm"
+          className="min-h-[300px] max-h-[300px] overflow-y-auto font-mono text-sm"
           spellCheck={false}
           wrap="off"
         />
@@ -102,13 +120,15 @@ const ConversionForm = ({
               <SelectValue placeholder="Select output language" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="typescript">TypeScript</SelectItem>
-              <SelectItem value="javascript">JavaScript</SelectItem>
-              <SelectItem value="java">Java</SelectItem>
+              <SelectItem value="c">C</SelectItem>
+              <SelectItem value="cpp">C++</SelectItem>
               <SelectItem value="csharp">C#</SelectItem>
               <SelectItem value="dart">Dart</SelectItem>
               <SelectItem value="go">Go</SelectItem>
+              <SelectItem value="java">Java</SelectItem>
+              <SelectItem value="javascript">JavaScript</SelectItem>
               <SelectItem value="python">Python</SelectItem>
+              <SelectItem value="typescript">TypeScript</SelectItem>
             </SelectContent>
           </Select>
           <Select
@@ -122,11 +142,13 @@ const ConversionForm = ({
               <SelectValue placeholder="Select highlight style" />
             </SelectTrigger>
             <SelectContent>
-              {Object.keys(prismStyles).map((style) => (
-                <SelectItem key={style} value={style}>
-                  {style}
-                </SelectItem>
-              ))}
+              {Object.keys(prismStyles)
+                .sort()
+                .map((style) => (
+                  <SelectItem key={style} value={style}>
+                    {style}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

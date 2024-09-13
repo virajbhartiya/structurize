@@ -14,7 +14,7 @@ const ConversionResult = ({
   highlightStyle: string
 }) => {
   return (
-    <Card className="w-full h-full border-[var(--accent)] flex flex-col">
+    <Card className="w-full max-h-[calc(100vh-10rem)] border-[var(--accent)] flex flex-col">
       <CardHeader className="flex-shrink-0">
         <CardTitle className="text-xl font-thin flex justify-between items-center">
           <p>Converted Result</p>

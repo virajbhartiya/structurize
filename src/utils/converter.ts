@@ -5,6 +5,8 @@ import { convertToJavaScript } from './converters/javascript'
 import { convertToTypeScript } from './converters/typescript'
 import { convertToGo } from './converters/go'
 import { convertToPython } from './converters/python'
+import { convertToC } from './converters/c'
+import { convertToCpp } from './converters/cpp'
 
 export function convertToInterface(
   apiResponse: string,
@@ -28,6 +30,11 @@ export function convertToInterface(
         return convertToGo(data)
       case 'python':
         return convertToPython(data)
+      case 'c':
+        return convertToC(data)
+      case 'cpp':
+        return convertToCpp(data)
+
       default:
         throw new Error('Unsupported language')
     }

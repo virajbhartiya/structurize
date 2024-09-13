@@ -55,16 +55,68 @@ export function convertToJava(
     result += `${indent}    public void set${capitalizedKey}(${type} ${key}) {\n${indent}        this.${key} = ${key};\n${indent}    }\n\n`
   }
 
-  // fromJson method
-  result += `${indent}    public static ${className} fromJson(String json) {\n`
-  result += `${indent}        // TODO: Implement JSON deserialization\n`
-  result += `${indent}        return new ${className}();\n`
+  // Add toJson method
+  result += `${indent}    public JSONObject toJson() {\n`
+  result += `${indent}        JSONObject json = new JSONObject();\n`
+  for (const [key, value] of Object.entries(data)) {
+    const { type } = getJavaTypeWithNesting(
+      value,
+      capitalizeFirstLetter(key),
+      indentLevel + 1
+    )
+    if (type.startsWith('List<')) {
+      result += `${indent}        JSONArray ${key}Array = new JSONArray();\n`
+      result += `${indent}        for (${type.slice(5, -1)} item : ${key}) {\n`
+      result += `${indent}            ${key}Array.put(item${
+        type.includes('Object') ? '' : '.toJson()'
+      });\n`
+      result += `${indent}        }\n`
+      result += `${indent}        json.put("${key}", ${key}Array);\n`
+    } else if (['String', 'Integer', 'Double', 'Boolean'].includes(type)) {
+      result += `${indent}        json.put("${key}", ${key});\n`
+    } else {
+      result += `${indent}        json.put("${key}", ${key}.toJson());\n`
+    }
+  }
+  result += `${indent}        return json;\n`
   result += `${indent}    }\n\n`
 
-  // toJson method
-  result += `${indent}    public String toJson() {\n`
-  result += `${indent}        // TODO: Implement JSON serialization\n`
-  result += `${indent}        return "";\n`
+  // Add fromJson method
+  result += `${indent}    public static ${className} fromJson(JSONObject json) {\n`
+  result += `${indent}        ${className} obj = new ${className}();\n`
+  for (const [key, value] of Object.entries(data)) {
+    const { type } = getJavaTypeWithNesting(
+      value,
+      capitalizeFirstLetter(key),
+      indentLevel + 1
+    )
+    const capitalizedKey = capitalizeFirstLetter(key)
+    if (type.startsWith('List<')) {
+      const itemType = type.slice(5, -1)
+      result += `${indent}        if (json.has("${key}")) {\n`
+      result += `${indent}            JSONArray ${key}Array = json.getJSONArray("${key}");\n`
+      result += `${indent}            obj.${key} = new ArrayList<>();\n`
+      result += `${indent}            for (int i = 0; i < ${key}Array.length(); i++) {\n`
+      if (['String', 'Integer', 'Double', 'Boolean'].includes(itemType)) {
+        result += `${indent}                obj.${key}.add(${key}Array.get${itemType}(i));\n`
+      } else {
+        result += `${indent}                obj.${key}.add(${itemType}.fromJson(${key}Array.getJSONObject(i)));\n`
+      }
+      result += `${indent}            }\n`
+      result += `${indent}        }\n`
+    } else if (type === 'String') {
+      result += `${indent}        if (json.has("${key}")) obj.set${capitalizedKey}(json.getString("${key}"));\n`
+    } else if (type === 'Integer') {
+      result += `${indent}        if (json.has("${key}")) obj.set${capitalizedKey}(json.getInt("${key}"));\n`
+    } else if (type === 'Double') {
+      result += `${indent}        if (json.has("${key}")) obj.set${capitalizedKey}(json.getDouble("${key}"));\n`
+    } else if (type === 'Boolean') {
+      result += `${indent}        if (json.has("${key}")) obj.set${capitalizedKey}(json.getBoolean("${key}"));\n`
+    } else {
+      result += `${indent}        if (json.has("${key}")) obj.set${capitalizedKey}(${type}.fromJson(json.getJSONObject("${key}")));\n`
+    }
+  }
+  result += `${indent}        return obj;\n`
   result += `${indent}    }\n`
 
   result += `${indentLevel === 0 ? '' : indent}}\n\n`
@@ -94,7 +146,7 @@ function getJavaTypeWithNesting(
     const nestedResult = convertToJava(
       value as Record<string, unknown>,
       nestedClassName,
-      indentLevel
+      0
     )
     return { type: nestedClassName, nestedClass: nestedResult }
   }
