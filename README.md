@@ -7,12 +7,12 @@ A powerful tool that converts API responses to Type definitions
 - [x] TypeScript
 - [x] JavaScript
 - [x] Go
-- [ ] Python
+- [x] Python
 - [x] Dart
 - [x] Java
 - [x] C#
-- [ ] C++
-- [ ] C
+- [x] C++
+- [x] C
 - [ ] PHP
 - [ ] Ruby
 - [ ] Swift
