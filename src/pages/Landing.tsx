@@ -5,6 +5,7 @@ import Header from '../components/shared/Header'
 import ConversionForm from '../components/conversion/ConversionForm'
 import ConversionResult from '@/components/conversion/ConversionResult'
 import { getRequest } from '@/utility/generalServices'
+import { toast } from 'sonner'
 
 export const Landing = () => {
   const [apiResponse, setApiResponse] = useState('')
@@ -25,6 +26,10 @@ export const Landing = () => {
   }, [highlightStyle])
 
   const handleConvert = async () => {
+    if (!apiResponse) {
+      toast.error('Please enter a valid JSON response')
+      return
+    }
     const converted = convertToInterface(apiResponse, outputLanguage)
     setResult(converted)
 
