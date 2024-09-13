@@ -36,14 +36,15 @@ export function convertToJavaScript(
     const { nestedClass } = getJavaScriptTypeWithNesting(
       value,
       capitalizeFirstLetter(key),
-      indentLevel + 1
+      0
     )
     if (nestedClass) {
       nestedClasses.push(nestedClass)
     }
   }
 
-  result += nestedClasses.join('\n')
+  // Add nested classes without additional indentation
+  result += nestedClasses.join('\n\n')
   return result.trimEnd() + '\n'
 }
 
@@ -69,7 +70,7 @@ function getJavaScriptTypeWithNesting(
     const nestedResult = convertToJavaScript(
       value as Record<string, unknown>,
       nestedClassName,
-      indentLevel
+      0 // Change this to 0 to remove indentation for nested classes
     )
     return { type: nestedClassName, nestedClass: nestedResult }
   }

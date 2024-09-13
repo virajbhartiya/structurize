@@ -13,7 +13,7 @@ export function convertToTypeScript(
     const { type, nestedInterface } = getTypeScriptTypeWithNesting(
       value,
       capitalizeFirstLetter(key) + 'Type',
-      indentLevel + 1
+      0 // Change this to 0 to remove indentation for nested interfaces
     )
     result += `${indent}  ${key}: ${type};\n`
     if (nestedInterface) {
@@ -57,7 +57,7 @@ export function convertToTypeScript(
   result += `${indent}  }\n`
 
   result += `${indent}}\n\n`
-  result += nestedInterfaces.join('\n')
+  result += nestedInterfaces.join('\n\n')
   return result.trimEnd() + '\n'
 }
 
@@ -83,7 +83,7 @@ function getTypeScriptTypeWithNesting(
     const nestedResult = convertToTypeScript(
       value as Record<string, unknown>,
       nestedInterfaceName,
-      indentLevel
+      0
     )
     return { type: nestedInterfaceName, nestedInterface: nestedResult }
   }
